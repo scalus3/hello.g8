@@ -1,7 +1,3 @@
-//> using scala 3.3.5
-//> using options -deprecation -feature
-//> using plugin org.scalus:scalus-plugin_3:0.8.5+380-34c30a02-SNAPSHOT
-//> using dep org.scalus:scalus_3:0.8.5+380-34c30a02-SNAPSHOT
 package validator
 
 import scalus.*
@@ -13,21 +9,20 @@ import scalus.prelude.*
 import scalus.prelude.Option.Some
 import scalus.prelude.Prelude.*
 
-/** A simple validator that checks if the redeemer is "Hello, Cardano!" and if the transaction is signed by the owner.
+/** A simple validator that checks if the redeemer is "Hello, Cardano!" and if
+  * the transaction is signed by the owner.
   */
 @Compile
-object HelloCardano extends Validator {
+object HelloCardano extends Validator:
     override def spend(
         datum: Option[Data],
         redeemer: Data,
         tx: TxInfo,
-        sourceTxOutRef: TxOutRef
-    ): Unit = {
+        outRef: TxOutRef
+    ): Unit =
         val Some(ownerData) = datum: @unchecked
         val owner = ownerData.to[PubKeyHash]
         val signed = tx.signatories.contains(owner)
         require(signed, "Must be signed")
         val saysHello = redeemer.to[String] == "Hello, Cardano!"
         require(saysHello, "Invalid redeemer")
-    }
-}
