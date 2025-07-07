@@ -7,9 +7,13 @@ import scalus.prelude.*
 import scalus.prelude.Option.Some
 import scalus.prelude.Prelude.*
 
-/** A simple validator that checks if the redeemer is "Hello, Cardano!" and if
-  * the transaction is signed by the owner.
-  */
+/** This validator demonstrates two key validation checks:
+    * 1. It verifies that the transaction is signed by the owner's public key hash (stored in the datum)
+    * 2. It confirms that the redeemer contains the exact string "Hello, Cardano!"
+    * 
+    * Both conditions must be met for the validator to approve spending the UTxO.
+      */
+
 @Compile
 object HelloCardano extends Validator:
     override def spend(
