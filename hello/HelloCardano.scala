@@ -2,8 +2,6 @@ package validator
 
 import scalus.*
 import scalus.builtin.Data
-import scalus.builtin.FromDataInstances.given
-import scalus.ledger.api.v1.FromDataInstances.given
 import scalus.ledger.api.v3.{PubKeyHash, TxInfo, TxOutRef}
 import scalus.prelude.*
 import scalus.prelude.Option.Some
