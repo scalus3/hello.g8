@@ -6,13 +6,11 @@ import scalus.Compiler.compile
 import scalus.builtin.ByteString.*
 import scalus.builtin.Data
 import scalus.builtin.Data.toData
-import scalus.cardano.ledger.ExUnits
 import scalus.ledger.api.v1.PubKeyHash
 import scalus.prelude.*
 import scalus.testkit.ScalusTest
 
 import scala.language.implicitConversions
-import scalus.uplc.eval.ExBudget
 class HelloCardanoTest extends AnyFunSuite with ScalusTest {
 
     test("Hello Cardano") {
