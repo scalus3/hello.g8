@@ -25,4 +25,3 @@ object HelloCardano extends Validator:
         require(signed, "Must be signed")
         val saysHello = redeemer.to[String] == "Hello, World!"
         require(saysHello, "Invalid redeemer")
-

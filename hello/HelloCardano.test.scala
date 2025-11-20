@@ -12,6 +12,7 @@ import scalus.prelude.*
 import scalus.testkit.ScalusTest
 
 import scala.language.implicitConversions
+import scalus.uplc.eval.ExBudget
 class HelloCardanoTest extends AnyFunSuite with ScalusTest {
 
     test("Hello Cardano") {
@@ -25,5 +26,6 @@ class HelloCardanoTest extends AnyFunSuite with ScalusTest {
 
         val result = compile(HelloCardano.validate).runScript(context)
         assert(result.isSuccess)
+        
     }
 }
