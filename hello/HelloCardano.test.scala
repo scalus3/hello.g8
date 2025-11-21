@@ -13,9 +13,9 @@ import scalus.testkit.ScalusTest
 import scala.language.implicitConversions
 class HelloCardanoTest extends AnyFunSuite with ScalusTest {
 
-    test("Hello Cardano") {
+    test("Hello Cardano message is signed by the owner") {
         val ownerPubKey = PubKeyHash(hex"1234567890abcdef1234567890abcdef1234567890abcdef12345678")
-        val message = "Hello, World!".toData
+        val message = "Hello, Cardano!".toData
         val context = makeSpendingScriptContext(
           datum = ownerPubKey.toData,
           redeemer = message,

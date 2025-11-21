@@ -23,5 +23,5 @@ object HelloCardano extends Validator:
         val owner = datum.getOrFail("Datum not found").to[PubKeyHash]
         val signed = tx.signatories.contains(owner)
         require(signed, "Must be signed")
-        val saysHello = redeemer.to[String] == "Hello, World!"
+        val saysHello = redeemer.to[String] == "Hello, Cardano!"
         require(saysHello, "Invalid redeemer")
