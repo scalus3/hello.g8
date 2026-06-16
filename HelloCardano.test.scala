@@ -3,30 +3,53 @@ package hello
 import org.scalatest.funsuite.AnyFunSuite
 import scalus.compiler.Options
 import scalus.uplc.PlutusV3
-import scalus.uplc.builtin.ByteString.*
+import scalus.uplc.builtin.Data
 import scalus.uplc.builtin.Data.toData
+import scalus.cardano.ledger.*
+import scalus.cardano.node.Emulator
+import scalus.cardano.txbuilder.RedeemerPurpose.ForSpend
+import scalus.cardano.txbuilder.{TxBuilder, txBuilder}
 import scalus.cardano.onchain.plutus.v1.PubKeyHash
-import scalus.cardano.onchain.plutus.prelude.*
+import scalus.testing.kit.Party.Alice
+import scalus.testing.kit.TestUtil
+import scalus.testing.kit.TestUtil.getScriptContextV3
 import scalus.testing.kit.ScalusTest
+import scalus.utils.await
 
-class HelloCardanoTest extends AnyFunSuite with ScalusTest {
+class HelloCardanoTest extends AnyFunSuite, ScalusTest {
 
     private given Options = Options.default
+    private given env: CardanoInfo = TestUtil.testEnvironment
 
-    private val compiled = PlutusV3.compile(HelloCardano.validate)
+    private val contract = PlutusV3.compile(HelloCardano.validate)
+    private val scriptAddress = contract.address(env.network)
 
     test("Hello Cardano message is signed by the owner") {
-        val ownerPubKey = PubKeyHash(
-          hex"1234567890abcdef1234567890abcdef1234567890abcdef12345678"
-        )
-        val message = "Hello, Cardano!".toData
-        val context = makeSpendingScriptContext(
-          datum = ownerPubKey.toData,
-          redeemer = message,
-          signatories = List(ownerPubKey)
-        )
+        val provider = Emulator.withAddresses(Seq(Alice.address))
 
-        val result = compiled.program.runWithDebug(context)
+        // Lock a UTxO at the contract, storing the owner's pub key hash as datum.
+        val fundingUtxos =
+            provider.findUtxos(Alice.address).await().toOption.get
+        val lockTx = TxBuilder(env)
+            .payTo(scriptAddress, Value.ada(10), PubKeyHash(Alice.addrKeyHash))
+            .complete(availableUtxos = fundingUtxos, sponsor = Alice.address)
+            .sign(Alice.signer)
+            .transaction
+        assert(provider.submit(lockTx).await().isRight)
+        val lockedUtxo = Utxo(lockTx.utxos.find { case (_, out) =>
+            out.address == scriptAddress
+        }.get)
+
+        // Build a draft spending transaction and derive its script context.
+        val message: Data = "Hello, Cardano!".toData
+        val scriptContext = txBuilder
+            .spend(lockedUtxo, message, contract)
+            .requireSignature(Alice.addrKeyHash)
+            .payTo(Alice.address, lockedUtxo.output.value)
+            .draft
+            .getScriptContextV3(provider.utxos, ForSpend(lockedUtxo.input))
+
+        val result = contract.program.runWithDebug(scriptContext)
         assert(result.isSuccess)
     }
 }

@@ -14,14 +14,16 @@ import scalus.cardano.onchain.plutus.prelude.*
   * Both conditions must be met for the validator to approve spending the UTxO.
   */
 @Compile
-object HelloCardano extends Validator:
+object HelloCardano extends Validator {
     inline override def spend(
         datum: Option[Data],
         redeemer: Data,
         tx: TxInfo,
         ownRef: TxOutRef
-    ): Unit =
+    ): Unit = {
         val owner = datum.getOrFail("Datum not found").to[PubKeyHash]
         require(tx.isSignedBy(owner), "Must be signed")
         val saysHello = redeemer.to[String] == "Hello, Cardano!"
         require(saysHello, "Invalid redeemer")
+    }
+}
