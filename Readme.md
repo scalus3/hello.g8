@@ -9,23 +9,29 @@ transaction is both signed by the owner stored in the datum **and** carries the 
 ## Prerequisites
 
 - A JDK (17+)
-- [Scala CLI](https://scala-cli.virtuslab.org/)
+- [Scala CLI](https://scala-cli.virtuslab.org/) and/or [sbt](https://www.scala-sbt.org/)
 
 ## Build & test
 
+The project works with both Scala CLI and sbt.
+
+With Scala CLI:
+
 ```sh
 scala-cli test .
-```
-
-```sh
 scala-cli compile .
-```
-
-Format the sources with:
-
-```sh
 scala-cli fmt .
 ```
+
+With sbt:
+
+```sh
+sbt test
+sbt compile
+```
+
+Both tools share the same flat source layout: sources live at the project root and test
+sources use the `.test.scala` suffix.
 
 ## Learn more
 
