@@ -1,20 +1,19 @@
-package validator
+package hello
 
 import org.scalatest.funsuite.AnyFunSuite
-import scalus.*
-import scalus.Compiler.compile
-import scalus.builtin.ByteString.*
-import scalus.builtin.Data
-import scalus.builtin.Data.toData
-import scalus.ledger.api.v1.PubKeyHash
-import scalus.prelude.*
+import scalus.compiler.compile
+import scalus.uplc.builtin.ByteString.*
+import scalus.uplc.builtin.Data.toData
+import scalus.cardano.onchain.plutus.v1.PubKeyHash
+import scalus.cardano.onchain.plutus.prelude.*
 import scalus.testing.kit.ScalusTest
 
-import scala.language.implicitConversions
 class HelloCardanoTest extends AnyFunSuite with ScalusTest {
 
     test("Hello Cardano message is signed by the owner") {
-        val ownerPubKey = PubKeyHash(hex"1234567890abcdef1234567890abcdef1234567890abcdef12345678")
+        val ownerPubKey = PubKeyHash(
+          hex"1234567890abcdef1234567890abcdef1234567890abcdef12345678"
+        )
         val message = "Hello, Cardano!".toData
         val context = makeSpendingScriptContext(
           datum = ownerPubKey.toData,
@@ -24,6 +23,5 @@ class HelloCardanoTest extends AnyFunSuite with ScalusTest {
 
         val result = compile(HelloCardano.validate).runScript(context)
         assert(result.isSuccess)
-        
     }
 }
