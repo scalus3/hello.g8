@@ -9,11 +9,13 @@ libraryDependencies ++= Seq(
 )
 
 addCompilerPlugin(
-  "org.scalus" % "scalus-plugin" % "0.18.1" cross CrossVersion.full
+  ("org.scalus" % "scalus-plugin" % "0.18.1").cross(CrossVersion.full)
 )
 
 // Scala CLI-compatible flat layout: sources live at the project root, and
 // test sources use the `.test.scala` suffix.
-Compile / sources := (baseDirectory.value * "*.scala").get.toSeq
+Compile / sources := (baseDirectory.value * "*.scala")
+    .get()
+    .toSeq
     .filterNot(_.getName.endsWith(".test.scala"))
-Test / sources := (baseDirectory.value * "*.test.scala").get.toSeq
+Test / sources := (baseDirectory.value * "*.test.scala").get().toSeq
