@@ -1,6 +1,11 @@
 val profile = taskKey[Unit](
   "Run tests with on-chain profiling enabled; writes an HTML report under target/"
 )
+val emulator =
+    taskKey[Unit]("Run tests against the in-memory Emulator (default)")
+val devkit = taskKey[Unit](
+  "Run tests against a local Yaci DevKit node (requires Docker)"
+)
 
 lazy val root = (project in file("."))
     .enablePlugins(ScalusBlueprintPlugin)
@@ -26,6 +31,15 @@ lazy val root = (project in file("."))
       // `sbt profile` runs the tests with profiling on (see *.test.scala).
       profile := Def.taskDyn {
           System.setProperty("scalus.profile", "true")
+          (Test / test)
+      }.value,
+      // `sbt emulator` / `sbt devkit` pick the integration-test backend.
+      emulator := Def.taskDyn {
+          System.setProperty("scalus.testEnv", "emulator")
+          (Test / test)
+      }.value,
+      devkit := Def.taskDyn {
+          System.setProperty("scalus.testEnv", "yaci")
           (Test / test)
       }.value
     )

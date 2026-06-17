@@ -33,6 +33,17 @@ sbt compile
 Both tools share the same flat source layout: sources live at the project root and test
 sources use the `.test.scala` suffix.
 
+### Test backends
+
+`HelloCardanoIntegration.test.scala` runs against a selectable backend:
+
+```sh
+sbt emulator   # in-memory emulator (default, fast — same as `sbt test`)
+sbt devkit     # a local Yaci DevKit node (requires a running Docker daemon)
+```
+
+(`SCALUS_TEST_ENV=yaci sbt test` works too.)
+
 ## Blueprint & deploy
 
 The sbt build enables the [`scalus-sbt-plugin`](https://github.com/nau/scalus), which adds tasks
