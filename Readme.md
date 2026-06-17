@@ -49,6 +49,15 @@ export CARDANO_MNEMONIC="word1 ..."  # or pass --mnemonic
 sbt "deploy HelloCardanoContract --network preview"
 ```
 
+## Profiling
+
+Generate an interactive HTML profile of the validator's on-chain execution (CPU/memory per source
+line). It runs the tests with profiling enabled and writes `target/profile.html`:
+
+```sh
+sbt profile
+```
+
 ## Learn more
 
 - Scalus documentation: https://scalus.org

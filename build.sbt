@@ -1,3 +1,7 @@
+val profile = taskKey[Unit](
+  "Run tests with on-chain profiling enabled; writes an HTML report under target/"
+)
+
 lazy val root = (project in file("."))
     .enablePlugins(ScalusBlueprintPlugin)
     .settings(
@@ -18,5 +22,10 @@ lazy val root = (project in file("."))
           .get()
           .toSeq
           .filterNot(_.getName.endsWith(".test.scala")),
-      Test / sources := (baseDirectory.value * "*.test.scala").get().toSeq
+      Test / sources := (baseDirectory.value * "*.test.scala").get().toSeq,
+      // `sbt profile` runs the tests with profiling on (see *.test.scala).
+      profile := Def.taskDyn {
+          System.setProperty("scalus.profile", "true")
+          (Test / test)
+      }.value
     )
