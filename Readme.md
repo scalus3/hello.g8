@@ -33,6 +33,22 @@ sbt compile
 Both tools share the same flat source layout: sources live at the project root and test
 sources use the `.test.scala` suffix.
 
+## Blueprint & deploy
+
+The sbt build enables the [`scalus-sbt-plugin`](https://github.com/nau/scalus), which adds tasks
+backed by the `Contract` in `HelloCardanoContract.scala`:
+
+```sh
+# Generate a CIP-57 blueprint at
+# target/scala-3.3.7/classes/META-INF/scalus/blueprints/HelloCardanoContract.json
+sbt blueprint
+
+# Deploy the validator as a reference-script UTxO (needs a Blockfrost key and a funded wallet)
+export BLOCKFROST_API_KEY=...        # or pass --blockfrost-key
+export CARDANO_MNEMONIC="word1 ..."  # or pass --mnemonic
+sbt "deploy HelloCardanoContract --network preview"
+```
+
 ## Learn more
 
 - Scalus documentation: https://scalus.org
