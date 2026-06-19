@@ -35,14 +35,15 @@ sources use the `.test.scala` suffix.
 
 ### Test backends
 
-`HelloCardanoIntegration.test.scala` runs against a selectable backend:
+`HelloCardanoIntegration.test.scala` runs against a backend selected by the `SCALUS_TEST_ENV`
+environment variable:
 
 ```sh
-sbt emulator   # in-memory emulator (default, fast — same as `sbt test`)
-sbt devkit     # a local Yaci DevKit node (requires a running Docker daemon)
+sbt test                       # in-memory emulator (default, fast)
+SCALUS_TEST_ENV=yaci sbt test  # a local Yaci DevKit node (requires a running Docker daemon)
 ```
 
-(`SCALUS_TEST_ENV=yaci sbt test` works too.)
+The same works with Scala CLI, e.g. `SCALUS_TEST_ENV=yaci scala-cli test .`.
 
 ## Blueprint & deploy
 
@@ -62,12 +63,14 @@ sbt "deploy HelloCardanoContract --network preview"
 
 ## Profiling
 
-Generate an interactive HTML profile of the validator's on-chain execution (CPU/memory per source
-line). It runs the tests with profiling enabled and writes `target/profile.html`:
+Set `SCALUS_PROFILE=1` to run the tests with on-chain execution profiling enabled. It writes an
+interactive HTML profile (CPU/memory per source line) to `target/profile.html`:
 
 ```sh
-sbt profile
+SCALUS_PROFILE=1 sbt test
 ```
+
+The same works with Scala CLI, e.g. `SCALUS_PROFILE=1 scala-cli test .`.
 
 ## Learn more
 

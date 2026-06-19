@@ -16,16 +16,5 @@ lazy val root = (project in file("."))
           .get()
           .toSeq
           .filterNot(_.getName.endsWith(".test.scala")),
-      Test / sources := (baseDirectory.value * "*.test.scala").get().toSeq,
-      commands ++= Seq(
-        Command.command("profile") { st =>
-            System.setProperty("scalus.profile", "true"); "testFull" :: st
-        },
-        Command.command("emulator") { st =>
-            System.setProperty("scalus.testEnv", "emulator"); "testFull" :: st
-        },
-        Command.command("devkit") { st =>
-            System.setProperty("scalus.testEnv", "yaci"); "testFull" :: st
-        }
-      )
+      Test / sources := (baseDirectory.value * "*.test.scala").get().toSeq
     )

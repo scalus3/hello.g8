@@ -20,16 +20,16 @@ import scala.util.Try
 
 /** Locks a UTxO at the contract and submits a spend to the selected backend.
   *
-  * Backend is chosen by `scalus.testEnv` (sbt `emulator`/`devkit` tasks) or the
-  * SCALUS_TEST_ENV env var: "emulator" (default, in-memory) or "yaci" (a local
-  * Yaci DevKit node, requires Docker).
+  * Backend is chosen by the SCALUS_TEST_ENV env var (or -Dscalus.testEnv):
+  * "emulator" (default, in-memory) or "yaci" (a local Yaci DevKit node,
+  * requires Docker).
   */
 class HelloCardanoIntegrationTest extends AnyFunSuite, IntegrationTest {
 
     override protected lazy val testEnvName: String =
-        sys.props
-            .get("scalus.testEnv")
-            .orElse(sys.env.get("SCALUS_TEST_ENV"))
+        sys.env
+            .get("SCALUS_TEST_ENV")
+            .orElse(sys.props.get("scalus.testEnv"))
             .getOrElse("emulator")
             .toLowerCase
             .trim
