@@ -1,7 +1,7 @@
-//> using scala 3.3.7
+//> using scala 3.3.8
 //> using options -deprecation -feature
-//> using plugin org.scalus:::scalus-plugin:0.18.1
-//> using dep org.scalus::scalus:0.18.1
-//> using test.dep org.scalus::scalus-testkit:0.18.1
+//> using plugin org.scalus:::scalus-plugin:1.0.0
+//> using dep org.scalus::scalus:1.0.0
+//> using test.dep org.scalus::scalus-testkit:1.0.0
 //> using test.dep org.scalatest::scalatest::3.2.20
 //> using test.framework org.scalatest.tools.Framework

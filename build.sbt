@@ -1,16 +1,16 @@
 lazy val root = (project in file("."))
     .enablePlugins(ScalusBlueprintPlugin)
     .settings(
-      scalaVersion := "3.3.7",
+      scalaVersion := "3.3.8",
       scalacOptions ++= Seq("-deprecation", "-feature"),
       libraryDependencies ++= Seq(
-        "org.scalus" %% "scalus" % "0.18.1",
-        "org.scalus" %% "scalus-cardano-ledger" % "0.18.1",
-        "org.scalus" %% "scalus-testkit" % "0.18.1" % Test,
+        "org.scalus" %% "scalus" % "1.0.0",
+        "org.scalus" %% "scalus-cardano-ledger" % "1.0.0",
+        "org.scalus" %% "scalus-testkit" % "1.0.0" % Test,
         "org.scalatest" %% "scalatest" % "3.2.20" % Test
       ),
       addCompilerPlugin(
-        ("org.scalus" % "scalus-plugin" % "0.18.1").cross(CrossVersion.full)
+        ("org.scalus" % "scalus-plugin" % "1.0.0").cross(CrossVersion.full)
       ),
       Compile / sources := (baseDirectory.value * "*.scala")
           .get()
