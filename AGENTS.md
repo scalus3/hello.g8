@@ -56,12 +56,15 @@ On-chain code is everything under `@Compile` (compiled with `PlutusV3.compile`):
 
 ## Skills
 
-`.claude/skills/` ships task guides Claude Code loads on demand:
+`.claude/settings.json` registers the Scalus marketplace and enables the `scalus@scalus`
+Claude Code plugin. Install it once with `/plugin install scalus@scalus`. In this project the
+plugin injects a routing table at session start and loads one skill per task:
 
-- `contract` - writing validators
-- `contract-test` - testing validators
-- `local-development` - Emulator + TxBuilder loop
-- `optimize-contract` - execution-budget optimization review
-- `smart-contract-security-review` - pre-deploy security audit
+- `scalus:contract` - writing validators
+- `scalus:contract-test` - testing validators
+- `scalus:local-development` - Emulator + TxBuilder loop
+- `scalus:optimize-contract` - execution-budget optimization review
+- `scalus:smart-contract-security-review` - pre-deploy security audit
 
-Other agents: read those `SKILL.md` files directly when doing the matching task.
+Other agents: read the matching `SKILL.md` from
+https://github.com/scalus3/scalus/tree/master/scalus-skills/skills when doing that task.
