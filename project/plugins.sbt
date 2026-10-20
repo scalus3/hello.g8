@@ -1,1 +1,1 @@
-addSbtPlugin("org.scalus" % "scalus-sbt-plugin" % "1.0.0")
+addSbtPlugin("org.scalus" % "scalus-sbt-plugin" % "1.4.0")
